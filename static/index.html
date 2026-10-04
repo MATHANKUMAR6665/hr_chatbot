@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HR Assistant</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><span class="logo">HR</span><div><h1>HR Assistant</h1><p>Leave, payroll, benefits, onboarding</p></div></div>
+    <form id="login" class="login" autocomplete="off">
+      <label for="empId">Employee ID</label>
+      <input id="empId" value="EMP101" maxlength="10" aria-describedby="loginHint">
+      <button type="submit">Sign in</button>
+      <button type="button" id="toggleNlp" class="ghost" aria-pressed="true">NLP Analysis</button>
+    </form>
+  </header>
+  <p id="loginHint" class="hint">Demo IDs: EMP101 to EMP105 (EMP105 is a new joiner)</p>
+
+  <main class="layout">
+    <section class="chat" aria-label="Chat">
+      <div id="banner" class="banner" role="alert" hidden></div>
+      <div id="messages" class="messages" aria-live="polite"></div>
+      <div id="typing" class="typing" hidden><span></span><span></span><span></span></div>
+      <div class="quick" id="quick">
+        <button data-msg="I want to apply for leave">🏖️ Apply Leave</button>
+        <button data-msg="What is my leave balance?">📊 Leave Balance</button>
+        <button data-msg="Show my payroll details">💰 Payroll</button>
+        <button data-msg="What benefits do I have?">🎁 Benefits</button>
+        <button data-msg="Show my profile">👨‍💼 My Profile</button>
+        <button data-msg="I am a new employee">🚀 Onboarding</button>
+      </div>
+      <form id="composer" class="composer" autocomplete="off">
+        <input id="msg" placeholder="Type your message and press Enter" aria-label="Message" disabled>
+        <button type="submit" id="send" disabled>Send</button>
+      </form>
+    </section>
+
+    <aside class="nlp" id="nlpPanel" aria-label="NLP Analysis">
+      <h2>NLP Analysis</h2>
+      <p class="empty" id="nlpEmpty">Send a message to see how it is analysed.</p>
+      <div id="nlpBody" hidden>
+        <h3>Intent</h3><p id="nIntent" class="big"></p><p id="nConf" class="muted"></p><p id="nTop" class="muted"></p>
+        <h3>Tokens</h3><p id="nTokens" class="tokens"></p>
+        <h3>POS tags</h3><div id="nPos" class="pos"></div>
+        <h3>Named entities</h3><ul id="nNer"></ul>
+        <h3>Extracted entities</h3><pre id="nEnt"></pre>
+        <h3>Sentiment</h3><p id="nSent"></p>
+        <h3>Dialogue state</h3><p id="nFlow" class="muted"></p><pre id="nSlots"></pre>
+      </div>
+    </aside>
+  </main>
+</div>
+<script src="/static/script.js"></script>
+</body>
+</html>
