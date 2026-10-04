@@ -122,29 +122,7 @@ Real authentication, manager approval workflow, persistent sessions (database/Re
 
 ---
 
-# Viva Questions and Answers
 
-1. **What is NLP?** Natural Language Processing is the field that lets computers read and understand human language. Our chatbot uses it to understand what an employee types.
-2. **What is tokenization?** Splitting a sentence into small pieces (tokens). "I need sick leave" → `I | need | sick | leave`. spaCy does this in `nlp.py`.
-3. **What is POS tagging?** Labelling each word with its grammar role: I→PRON, need→VERB, sick→ADJ, leave→NOUN. It is shown in the NLP panel.
-4. **What is NER?** Named Entity Recognition finds real-world items in text, e.g. "October 8" → DATE. We also added custom types EMPLOYEE_ID and LEAVE_TYPE.
-5. **What is sentiment analysis?** Finding whether a message is positive, negative or neutral. We use VADER, which gives a score from -1 to +1. If the user is upset the bot apologises.
-6. **What is an intent?** The goal behind a message, e.g. `leave_balance` for "How many leaves do I have?". We have 23 intents.
-7. **What is an entity?** A useful detail inside a message, e.g. leave_type=sick, number_of_days=2, start_date=October 8.
-8. **What is slot filling?** Collecting all the information needed for a task. A leave request needs leave_type, start_date, number_of_days and reason; the bot asks only for the missing ones.
-9. **What is context?** Memory of the conversation. We store it in the `sessions` dictionary (current flow, slots, which slot we are waiting for). That is why "October 8" alone is understood.
-10. **What is a multi-turn conversation?** A task that takes several messages, like the leave request or onboarding questions.
-11. **What is fallback?** The reply when the bot doesn't understand ("I can help with HR questions…"). It is triggered when confidence < 0.30 or the intent is `fallback`.
-12. **Why use TF-IDF?** It converts text to numbers by giving weight to words that are important for a sentence and rare overall (like "payslip"), and low weight to common words. It is simple and easy to explain.
-13. **Why Logistic Regression?** It is a fast, light classifier that works well on small data and gives probabilities, which we use as the confidence score.
-14. **Why SQLite?** It is a real SQL database stored in one file, with no server to install – ideal for a demo.
-15. **Why FastAPI?** It is fast, easy to write, validates input automatically (Pydantic) and generates API docs at `/docs`.
-16. **What is API fulfilment?** After the bot knows the intent, it calls backend functions/APIs to get or change real data (e.g. `get_leave_balance`, `apply_leave`) instead of using fixed text. The REST endpoints and the chatbot use the same functions.
-17. **How does the chatbot identify an intent?** The message is cleaned, converted by TF-IDF, and the Logistic Regression model gives a probability for every intent; the highest one wins.
-18. **How does the chatbot remember previous messages?** The `session` for each employee stores the active flow, the slots collected so far and the slot being asked. `continue_flow()` checks this before treating a message as a new question.
-19. **How does the leave balance come from the database?** `h_leave_balance` calls `database.get_leave_balance(employee_id)`, which runs a SQL `SELECT` on the `leave_balance` table; `responses.py` formats the row as a card.
-20. **What happens when the chatbot doesn't understand?** Confidence is low → intent becomes `fallback` → the bot politely lists what it can do. Empty messages, wrong employee IDs and database errors also return friendly messages, never a stack trace.
-21. **What is the difference between linear and non-linear dialogue?** Linear = fixed question order (onboarding). Non-linear = the user can change topic or give information in any order (leave flow, salary question in the middle).
 22. **Why not use Dialogflow or Rasa?** The exam goal is to show we understand each part, so we built intent detection, entities and dialogue management ourselves.
 23. **How are dates like "October 8" handled?** `utils.find_dates` finds them with a regex, validates them (October 45 is rejected) and stores them as ISO dates (2026-10-08).
 24. **Where is sentiment used?** In `chatbot.py`: if the score is below -0.25, an apology is added, and for salary questions the full payroll is shown.
